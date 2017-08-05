@@ -2,22 +2,22 @@ package net.codebox.asynctestutil;
 
 import java.time.Duration;
 
-public class TimeConstraint {
+class TimeConstraint {
     static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(15);
     static final Duration DEFAULT_CHECK_INTERVAL = Duration.ofSeconds(1);
 
     private Duration timeout;
     private Duration checkInterval;
 
-    public TimeConstraint() {
+    TimeConstraint() {
         this(DEFAULT_TIMEOUT, DEFAULT_CHECK_INTERVAL);
     }
 
-    public TimeConstraint(final Duration timeout) {
+    TimeConstraint(final Duration timeout) {
         this(timeout, DEFAULT_CHECK_INTERVAL);
     }
 
-    public TimeConstraint(final Duration timeout, final Duration checkInterval) {
+    TimeConstraint(final Duration timeout, final Duration checkInterval) {
         if (timeout.isNegative() || timeout.isZero()) {
             throw new IllegalArgumentException("Invalid timeout interval: " + format(timeout));
         }

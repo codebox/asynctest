@@ -1,6 +1,6 @@
 package net.codebox.asynctestutil;
 
 @FunctionalInterface
-public interface Sleeper {
+interface Sleeper {
     void sleep(long millis) throws InterruptedException;
 }

@@ -1,6 +1,6 @@
 package net.codebox.asynctestutil;
 
 @FunctionalInterface
-public interface Task {
+interface Task {
     void run() throws Exception;
 }

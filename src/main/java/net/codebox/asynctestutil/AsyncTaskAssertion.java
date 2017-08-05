@@ -8,6 +8,12 @@ import java.util.function.BooleanSupplier;
 
 import static org.junit.Assert.fail;
 
+/**
+ * Class that represents an assertion that an asynchronous task will succeed or fail within
+ * a specified time. Each instance of this class requires a Task object, and a timeout
+ * value represented by a Duration object. If no timeout is specified a default value of
+ * 15 seconds will be used.
+ */
 public class AsyncTaskAssertion {
     private TimeConstraint timeConstraint = new TimeConstraint();
     private Task task;
@@ -19,21 +25,43 @@ public class AsyncTaskAssertion {
     private Clock clock = Clock.systemDefaultZone();
     private Sleeper sleeper = Thread::sleep;
 
+    /**
+     * Sets the timeout value to be associated with this object.
+     *
+     * @param timeout length of time beyond which the assertion will fail
+     * @return a reference to the current instance
+     */
     public AsyncTaskAssertion withTimeout(final Duration timeout) {
         this.timeConstraint = new TimeConstraint(timeout);
         return this;
     }
 
+    /**
+     * Sets the Task to be associated with this object.
+     *
+     * @param task the task that will be executed by this object
+     * @return a reference to the current instance
+     */
     public AsyncTaskAssertion thisTask(final Task task) {
         this.task = task;
         return this;
     }
 
+    /**
+     * Sets the Task to be associated with this object, and indicates that the task must
+     * complete without any exceptions/errors being thrown in order for the assertion to succeed.
+     *
+     * @param task the task that will be executed by this object
+     */
     public void thisTaskWillSucceed(final Task task) {
         this.task = task;
         willSucceed();
     }
 
+    /**
+     * Indicates that the task associated with this object must complete without any exceptions/errors being
+     * thrown in order for the assertion to succeed.
+     */
     public void willSucceed() {
         assertionPassed = () -> succeeded;
 
@@ -45,6 +73,12 @@ public class AsyncTaskAssertion {
         }
     }
 
+    /**
+     * Indicates that the task associated with this object must throw the specified Exception in order
+     * for the assertion to succeed.
+     *
+     * @param ex class representing the type of Exception that must be thrown
+     */
     public void willThrow(final Class<? extends Exception> ex) {
         assertionPassed = () -> lastException != null && ex.isAssignableFrom(lastException.getClass());
 
